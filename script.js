@@ -1,4 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 多语言支持
+    const translations = {
+        'zh': {
+            'title': '贪吃蛇游戏',
+            'score-label': '分数: ',
+            'start-btn': '开始游戏',
+            'pause-btn': '暂停',
+            'continue-btn': '继续',
+            'restart-btn': '重新开始',
+            'game-over': '游戏结束!',
+            'final-score-label': '你的最终分数: ',
+            'play-again-btn': '再玩一次',
+            'lang-toggle': 'EN'
+        },
+        'en': {
+            'title': 'Snake Game',
+            'score-label': 'Score: ',
+            'start-btn': 'Start Game',
+            'pause-btn': 'Pause',
+            'continue-btn': 'Continue',
+            'restart-btn': 'Restart',
+            'game-over': 'Game Over!',
+            'final-score-label': 'Your Final Score: ',
+            'play-again-btn': 'Play Again',
+            'lang-toggle': '中文'
+        }
+    };
+
+    let currentLang = 'zh';
+
     // 获取DOM元素
     const canvas = document.getElementById('game-board');
     const ctx = canvas.getContext('2d');
@@ -9,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartBtn = document.getElementById('restart-btn');
     const gameOverElement = document.getElementById('game-over');
     const playAgainBtn = document.getElementById('play-again-btn');
+    const langToggleBtn = document.getElementById('lang-toggle');
 
     // 游戏配置
     const gridSize = 20; // 网格大小
@@ -76,16 +107,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 语言切换功能
+    function updateLanguage() {
+        const elements = document.querySelectorAll('[data-lang]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-lang');
+            if (translations[currentLang][key]) {
+                if (element.tagName === 'TITLE') {
+                    element.textContent = translations[currentLang][key];
+                } else if (element.querySelector('span')) {
+                    element.querySelector('span').textContent = translations[currentLang][key];
+                } else {
+                    element.textContent = translations[currentLang][key];
+                }
+            }
+        });
+        
+        // 更新HTML语言属性
+        document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+    }
+
+    // 切换语言
+    function toggleLanguage() {
+        currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        updateLanguage();
+        
+        // 如果游戏正在暂停，更新暂停按钮文本
+        if (gamePaused) {
+            const pauseBtnSpan = pauseBtn.querySelector('span');
+            pauseBtnSpan.textContent = translations[currentLang]['continue-btn'];
+        }
+    }
+
     // 暂停游戏
     function pauseGame() {
         if (gameRunning) {
             if (gamePaused) {
                 gamePaused = false;
-                pauseBtn.textContent = '暂停';
+                const pauseBtnSpan = pauseBtn.querySelector('span');
+                pauseBtnSpan.textContent = translations[currentLang]['pause-btn'];
                 gameInterval = setInterval(drawGame, 1000 / speed);
             } else {
                 gamePaused = true;
-                pauseBtn.textContent = '继续';
+                const pauseBtnSpan = pauseBtn.querySelector('span');
+                pauseBtnSpan.textContent = translations[currentLang]['continue-btn'];
                 clearInterval(gameInterval);
             }
             updateButtonStates();
@@ -347,7 +412,9 @@ document.addEventListener('DOMContentLoaded', () => {
     pauseBtn.addEventListener('click', pauseGame);
     restartBtn.addEventListener('click', restartGame);
     playAgainBtn.addEventListener('click', restartGame);
+    langToggleBtn.addEventListener('click', toggleLanguage);
 
-    // 初始化游戏
+    // 初始化语言和游戏
+    updateLanguage();
     initGame();
 });

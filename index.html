@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>贪吃蛇游戏</title>
+    <title data-lang="title">贪吃蛇游戏</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="game-container">
         <div class="game-header">
-            <h1>贪吃蛇游戏</h1>
+            <div class="header-top">
+                <h1 data-lang="title">贪吃蛇游戏</h1>
+                <button id="lang-toggle" class="lang-btn">
+                    <i class="fas fa-globe"></i>
+                    <span data-lang="lang-toggle">EN</span>
+                </button>
+            </div>
             <div class="score-container">
-                <span>分数: </span>
+                <span data-lang="score-label">分数: </span>
                 <span id="score">0</span>
             </div>
         </div>
@@ -19,15 +26,30 @@
         <canvas id="game-board" width="400" height="400"></canvas>
         
         <div class="controls">
-            <button id="start-btn">开始游戏</button>
-            <button id="pause-btn">暂停</button>
-            <button id="restart-btn">重新开始</button>
+            <button id="start-btn" data-lang="start-btn">
+                <i class="fas fa-play"></i>
+                <span>开始游戏</span>
+            </button>
+            <button id="pause-btn" data-lang="pause-btn">
+                <i class="fas fa-pause"></i>
+                <span>暂停</span>
+            </button>
+            <button id="restart-btn" data-lang="restart-btn">
+                <i class="fas fa-redo"></i>
+                <span>重新开始</span>
+            </button>
         </div>
         
         <div id="game-over" class="hidden">
-            <h2>游戏结束!</h2>
-            <p>你的最终分数: <span id="final-score">0</span></p>
-            <button id="play-again-btn">再玩一次</button>
+            <div class="game-over-content">
+                <i class="fas fa-skull game-over-icon"></i>
+                <h2 data-lang="game-over">游戏结束!</h2>
+                <p><span data-lang="final-score-label">你的最终分数: </span><span id="final-score">0</span></p>
+                <button id="play-again-btn" data-lang="play-again-btn">
+                    <i class="fas fa-play"></i>
+                    <span>再玩一次</span>
+                </button>
+            </div>
         </div>
     </div>
     
